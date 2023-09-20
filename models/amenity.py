@@ -1,28 +1,19 @@
-#!/usr/bin/python3
-"""
-    module containing Amenity class
-"""
 from models.base_model import BaseModel, Base
-from models.city import City
-from models.user import User
-from models.place import place_amenity
+from sqlalchemy import Column, String, Table, ForeignKey
 from sqlalchemy.orm import relationship
-from sqlalchemy import Column, String, Integer, Float, ForeignKey
-from os import environ
 
-storage_engine = environ.get("HBNB_TYPE_STORAGE")
-
+association_table = Table('place_amenity', Base.metadata,
+    Column('place_id', String(60), ForeignKey('places.id'), primary_key=True, nullable=False),
+    Column('amenity_id', String(60), ForeignKey('amenities.id'), primary_key=True, nullable=False)
+)
 
 class Amenity(BaseModel, Base):
-    """
-        Amenity class
-    """
+    __tablename__ = 'amenities'
+    
+    name = Column(String(128), nullable=False)
+    place_amenities = relationship('Place', secondary=association_table, back_populates='amenities')
 
-    if (storage_engine == "db"):
-        __tablename__ = "amenities"
-        name = Column(String(128), nullable=False)
-        place_amenities = relationship(
-            "Place",
-            secondary=place_amenity, back_populates="amenities")
-    else:
-        name = ""
+class Place(BaseModel, Base):
+    __tablename__ = 'places'
+    
+    amenities = relationship('Amenity', secondary=association_table, back_populates='place_amenities')
