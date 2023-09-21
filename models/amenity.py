@@ -1,19 +1,22 @@
+#!/usr/bin/python3
+""" holds class Amenity"""
+import models
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, String, Table, ForeignKey
+from os import getenv
+import sqlalchemy
+from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 
-association_table = Table('place_amenity', Base.metadata,
-    Column('place_id', String(60), ForeignKey('places.id'), primary_key=True, nullable=False),
-    Column('amenity_id', String(60), ForeignKey('amenities.id'), primary_key=True, nullable=False)
-)
 
 class Amenity(BaseModel, Base):
-    __tablename__ = 'amenities'
-    
-    name = Column(String(128), nullable=False)
-    place_amenities = relationship('Place', secondary=association_table, back_populates='amenities')
+    """Representation of Amenity """
+    if getenv('HBNB_TYPE_STORAGE') == 'db':
+        __tablename__ = 'amenities'
+        name = Column(String(128),
+                      nullable=False)
+    else:
+        name = ""
 
-class Place(BaseModel, Base):
-    __tablename__ = 'places'
-    
-    amenities = relationship('Amenity', secondary=association_table, back_populates='place_amenities')
+    def __init__(self, *args, **kwargs):
+        """initializes Amenity"""
+        super().__init__(*args, **kwargs)
