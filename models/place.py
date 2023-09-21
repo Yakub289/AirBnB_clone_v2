@@ -1,6 +1,5 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, Integer, Float, ForeignKey
-from sqlalchemy.orm import relationship
 
 class Place(BaseModel, Base):
     __tablename__ = 'places'
@@ -15,13 +14,13 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, nullable=False, default=0)
     latitude = Column(Float)
     longitude = Column(Float)
-    
+
 class User(BaseModel, Base):
     __tablename__ = 'users'
     
-    places = relationship('Place', cascade='all, delete', backref='user')
-    
+    places = relationship('Place', backref='user')
+
 class City(BaseModel, Base):
     __tablename__ = 'cities'
     
-    places = relationship('Place', cascade='all, delete', backref='cities')
+    places = relationship('Place', backref='city')

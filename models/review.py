@@ -1,6 +1,5 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey
-from sqlalchemy.orm import relationship
 
 class Review(BaseModel, Base):
     __tablename__ = 'reviews'
@@ -12,4 +11,4 @@ class Review(BaseModel, Base):
 class User(BaseModel, Base):
     __tablename__ = 'users'
     
-    reviews = relationship('Review', cascade='all, delete', backref='user')
+    reviews = relationship('Review', backref='user')
