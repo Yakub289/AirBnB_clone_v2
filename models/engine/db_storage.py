@@ -1,10 +1,10 @@
 #!/usr/bin/python3
+
 """Database storage engine using SQLAlchemy with a mysql+mysqldb database
-connection.
-"""
+connection."""
 
 import os
-from models.base_model import Base
+from models.base_model import BaseModel
 from models.amenity import Amenity
 from models.city import City
 from models.place import Place
